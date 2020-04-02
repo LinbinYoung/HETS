@@ -1,0 +1,1 @@
+/usr/local/gcc/bin/c++     CMakeFiles/clustarexamples.dir/boot.cpp.o CMakeFiles/clustarexamples.dir/test.cpp.o  -o /home/linbin/SEAL/native/bin/clustarexamples  /home/linbin/SEAL/native/lib/libseal-3.4.a -pthread 
