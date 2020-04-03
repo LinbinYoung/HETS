@@ -1,25 +1,23 @@
 Performing C++ SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
 Change Dir: /home/linbin/SEAL/native/clustar/CMakeFiles/CMakeTmp
 
-Run Build Command(s):/usr/bin/make cmTC_1d54c/fast && /usr/bin/make -f CMakeFiles/cmTC_1d54c.dir/build.make CMakeFiles/cmTC_1d54c.dir/build
-make[1]: Entering directory '/home/linbin/SEAL/native/clustar/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_1d54c.dir/src.cxx.o
-/usr/bin/c++    -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_1d54c.dir/src.cxx.o -c /home/linbin/SEAL/native/clustar/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_1d54c
-/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1d54c.dir/link.txt --verbose=1
-/usr/bin/c++   -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_1d54c.dir/src.cxx.o  -o cmTC_1d54c 
-CMakeFiles/cmTC_1d54c.dir/src.cxx.o: In function `main':
-src.cxx:(.text+0x3e): undefined reference to `pthread_create'
-src.cxx:(.text+0x4a): undefined reference to `pthread_detach'
-src.cxx:(.text+0x56): undefined reference to `pthread_cancel'
-src.cxx:(.text+0x67): undefined reference to `pthread_join'
-src.cxx:(.text+0x7b): undefined reference to `pthread_atfork'
+Run Build Command(s):/usr/bin/gmake cmTC_7d5ce/fast && /usr/bin/gmake -f CMakeFiles/cmTC_7d5ce.dir/build.make CMakeFiles/cmTC_7d5ce.dir/build
+gmake[1]: Entering directory `/home/linbin/SEAL/native/clustar/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_7d5ce.dir/src.cxx.o
+/usr/local/gcc/bin/c++    -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_7d5ce.dir/src.cxx.o -c /home/linbin/SEAL/native/clustar/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_7d5ce
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7d5ce.dir/link.txt --verbose=1
+/usr/local/gcc/bin/c++   -DCMAKE_HAVE_LIBC_PTHREAD    CMakeFiles/cmTC_7d5ce.dir/src.cxx.o  -o cmTC_7d5ce 
+CMakeFiles/cmTC_7d5ce.dir/src.cxx.o: In function `main':
+src.cxx:(.text+0x2d): undefined reference to `pthread_create'
+src.cxx:(.text+0x39): undefined reference to `pthread_detach'
+src.cxx:(.text+0x45): undefined reference to `pthread_cancel'
+src.cxx:(.text+0x56): undefined reference to `pthread_join'
+src.cxx:(.text+0x6a): undefined reference to `pthread_atfork'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_1d54c.dir/build.make:103: recipe for target 'cmTC_1d54c' failed
-make[1]: *** [cmTC_1d54c] Error 1
-make[1]: Leaving directory '/home/linbin/SEAL/native/clustar/CMakeFiles/CMakeTmp'
-Makefile:138: recipe for target 'cmTC_1d54c/fast' failed
-make: *** [cmTC_1d54c/fast] Error 2
+gmake[1]: *** [cmTC_7d5ce] Error 1
+gmake[1]: Leaving directory `/home/linbin/SEAL/native/clustar/CMakeFiles/CMakeTmp'
+gmake: *** [cmTC_7d5ce/fast] Error 2
 
 
 Source file was:

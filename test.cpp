@@ -12,12 +12,11 @@ using namespace seal;
 
 #define MAXS 180000 //running for 3 minutes
 
-
 void bfv_performance(shared_ptr<SEALContext> context){
     /* Get the current timestamp
     */
     string path = "../clustar/record/log";
-    time_t t; t = time(NULL); int ii = time(&t); path = path + to_string(getpid()) + "-" + to_string(ii);
+    path = path + to_string(getpid());
     ofstream LogVVV(path);
     chrono::high_resolution_clock::time_point time_start, time_end;
     chrono::microseconds time_diff;
@@ -31,7 +30,7 @@ void bfv_performance(shared_ptr<SEALContext> context){
     KeyGenerator keygen(context);
     time_end = chrono::high_resolution_clock::now();
     time_diff = chrono::duration_cast<chrono::microseconds>(time_end - time_start);
-    LogVVV << "Generate Keys Done [" << time_diff.count() << " microseconds]" << endl;
+    LogVVV << "Generate Keys Done: " << time_diff.count() << " microseconds" << endl;
     auto secret_key = keygen.secret_key();
     auto public_key = keygen.public_key();
     RelinKeys relin_keys;
@@ -43,7 +42,7 @@ void bfv_performance(shared_ptr<SEALContext> context){
         relin_keys = keygen.relin_keys();
         time_end = chrono::high_resolution_clock::now();
         time_diff = chrono::duration_cast<chrono::microseconds>(time_end - time_start);
-        LogVVV << "Generate Relinearization Keys Done [" << time_diff.count() << " microseconds]" << endl;
+        LogVVV << "Generate Relinearization Keys Done: " << time_diff.count() << " microseconds" << endl;
         if (!context->key_context_data()->qualifiers().using_batching){
             LogVVV << "Given encryption parameters do not support batching." << endl;
             return;
@@ -54,7 +53,7 @@ void bfv_performance(shared_ptr<SEALContext> context){
         gal_keys = keygen.galois_keys();
         time_end = chrono::high_resolution_clock::now();
         time_diff = chrono::duration_cast<chrono::microseconds>(time_end - time_start);
-        LogVVV << "Generating Galois Key Done [" << time_diff.count() << " microseconds]" << endl;
+        LogVVV << "Generating Galois Key Done: " << time_diff.count() << " microseconds" << endl;
     }
 
     Encryptor encryptor(context, public_key);
@@ -152,8 +151,8 @@ void bfv_performance(shared_ptr<SEALContext> context){
         encryptor.encrypt(encoder.encode(static_cast<uint64_t>(100 + 1)), encrypted2);
         time_start = chrono::high_resolution_clock::now();
         evaluator.add_inplace(encrypted1, encrypted1);
-        evaluator.add_inplace(encrypted2, encrypted2);
-        evaluator.add_inplace(encrypted1, encrypted2);
+        // evaluator.add_inplace(encrypted2, encrypted2);
+        // evaluator.add_inplace(encrypted1, encrypted2);
         time_end = chrono::high_resolution_clock::now();
         time_add_sum += chrono::duration_cast<chrono::microseconds>(time_end - time_start);
 
@@ -212,7 +211,7 @@ void bfv_performance(shared_ptr<SEALContext> context){
             */
             time_start = chrono::high_resolution_clock::now();
             evaluator.rotate_rows_inplace(encrypted, 1, gal_keys);
-            evaluator.rotate_rows_inplace(encrypted, -1, gal_keys);
+            // evaluator.rotate_rows_inplace(encrypted, -1, gal_keys);
             time_end = chrono::high_resolution_clock::now();
             time_rotate_rows_one_step_sum += chrono::duration_cast<
                 chrono::microseconds>(time_end - time_start);;
@@ -250,7 +249,7 @@ void bfv_performance(shared_ptr<SEALContext> context){
         printf("%d\r", count);
         cout.flush();
     }
-
+    LogVVV << "count: " << count << endl;
     cout << " Done" << endl << endl;
     cout.flush();
 
@@ -258,12 +257,12 @@ void bfv_performance(shared_ptr<SEALContext> context){
     auto avg_unbatch = time_unbatch_sum.count() / count;
     auto avg_encrypt = time_encrypt_sum.count() / count;
     auto avg_decrypt = time_decrypt_sum.count() / count;
-    auto avg_add = time_add_sum.count() / (3 * count);
+    auto avg_add = time_add_sum.count() / count;
     auto avg_multiply = time_multiply_sum.count() / count;
     auto avg_multiply_plain = time_multiply_plain_sum.count() / count;
     auto avg_square = time_square_sum.count() / count;
     auto avg_relinearize = time_relinearize_sum.count() / count;
-    auto avg_rotate_rows_one_step = time_rotate_rows_one_step_sum.count() / (2 * count);
+    auto avg_rotate_rows_one_step = time_rotate_rows_one_step_sum.count() / count;
     auto avg_rotate_rows_random = time_rotate_rows_random_sum.count() / count;
     auto avg_rotate_columns = time_rotate_columns_sum.count() / count;
 

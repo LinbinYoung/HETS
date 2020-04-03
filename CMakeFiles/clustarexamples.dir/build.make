@@ -77,28 +77,28 @@ include CMakeFiles/clustarexamples.dir/flags.make
 CMakeFiles/clustarexamples.dir/boot.cpp.o: CMakeFiles/clustarexamples.dir/flags.make
 CMakeFiles/clustarexamples.dir/boot.cpp.o: boot.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linbin/SEAL/native/clustar/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/clustarexamples.dir/boot.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/clustarexamples.dir/boot.cpp.o -c /home/linbin/SEAL/native/clustar/boot.cpp
+	/usr/local/gcc/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/clustarexamples.dir/boot.cpp.o -c /home/linbin/SEAL/native/clustar/boot.cpp
 
 CMakeFiles/clustarexamples.dir/boot.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/clustarexamples.dir/boot.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linbin/SEAL/native/clustar/boot.cpp > CMakeFiles/clustarexamples.dir/boot.cpp.i
+	/usr/local/gcc/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linbin/SEAL/native/clustar/boot.cpp > CMakeFiles/clustarexamples.dir/boot.cpp.i
 
 CMakeFiles/clustarexamples.dir/boot.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/clustarexamples.dir/boot.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linbin/SEAL/native/clustar/boot.cpp -o CMakeFiles/clustarexamples.dir/boot.cpp.s
+	/usr/local/gcc/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linbin/SEAL/native/clustar/boot.cpp -o CMakeFiles/clustarexamples.dir/boot.cpp.s
 
 CMakeFiles/clustarexamples.dir/test.cpp.o: CMakeFiles/clustarexamples.dir/flags.make
 CMakeFiles/clustarexamples.dir/test.cpp.o: test.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/linbin/SEAL/native/clustar/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/clustarexamples.dir/test.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/clustarexamples.dir/test.cpp.o -c /home/linbin/SEAL/native/clustar/test.cpp
+	/usr/local/gcc/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/clustarexamples.dir/test.cpp.o -c /home/linbin/SEAL/native/clustar/test.cpp
 
 CMakeFiles/clustarexamples.dir/test.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/clustarexamples.dir/test.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linbin/SEAL/native/clustar/test.cpp > CMakeFiles/clustarexamples.dir/test.cpp.i
+	/usr/local/gcc/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/linbin/SEAL/native/clustar/test.cpp > CMakeFiles/clustarexamples.dir/test.cpp.i
 
 CMakeFiles/clustarexamples.dir/test.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/clustarexamples.dir/test.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linbin/SEAL/native/clustar/test.cpp -o CMakeFiles/clustarexamples.dir/test.cpp.s
+	/usr/local/gcc/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/linbin/SEAL/native/clustar/test.cpp -o CMakeFiles/clustarexamples.dir/test.cpp.s
 
 # Object files for target clustarexamples
 clustarexamples_OBJECTS = \
@@ -111,8 +111,7 @@ clustarexamples_EXTERNAL_OBJECTS =
 /home/linbin/SEAL/native/bin/clustarexamples: CMakeFiles/clustarexamples.dir/boot.cpp.o
 /home/linbin/SEAL/native/bin/clustarexamples: CMakeFiles/clustarexamples.dir/test.cpp.o
 /home/linbin/SEAL/native/bin/clustarexamples: CMakeFiles/clustarexamples.dir/build.make
-/home/linbin/SEAL/native/bin/clustarexamples: /usr/local/lib/libseal-3.4.a
-/home/linbin/SEAL/native/bin/clustarexamples: /usr/lib/x86_64-linux-gnu/libz.so
+/home/linbin/SEAL/native/bin/clustarexamples: /home/linbin/SEAL/native/lib/libseal-3.4.a
 /home/linbin/SEAL/native/bin/clustarexamples: CMakeFiles/clustarexamples.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/linbin/SEAL/native/clustar/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable /home/linbin/SEAL/native/bin/clustarexamples"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/clustarexamples.dir/link.txt --verbose=$(VERBOSE)
