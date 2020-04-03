@@ -2,17 +2,26 @@
 // Licensed under the MIT license.
 
 #include "common.h"
+#include <fstream>
+#include <iostream>
+#include <time.h>
+#include <unistd.h>
 
 using namespace std;
 using namespace seal;
 
-#define MAXS 180000000 //running for 3 minutes
+#define MAXS 180000 //running for 3 minutes
+
 
 void bfv_performance(shared_ptr<SEALContext> context){
+    /* Get the current timestamp
+    */
+    // string path = "../clustar/record/log";
+    // time_t t; t = time(NULL); int ii = time(&t); path = path + to_string(getpid()) + "-" + to_string(ii);
+    // ofstream cout(path);
     chrono::high_resolution_clock::time_point time_start, time_end;
     chrono::microseconds time_diff;
     print_parameters(context);
-    cout << endl;
     auto &parms = context->first_context_data()->parms();
     auto &plain_modulus = parms.plain_modulus();
     size_t poly_modulus_degree = parms.poly_modulus_degree();
@@ -78,7 +87,7 @@ void bfv_performance(shared_ptr<SEALContext> context){
         pod_vector.push_back(rd() % plain_modulus.value());
     }
     long long count = 0;
-    cout << "Running tests ";
+    cout << "Running tests: " << endl;
     chrono::high_resolution_clock::time_point time_start_g, time_end_g;
     chrono::microseconds time_diff_g;
     time_start_g = chrono::high_resolution_clock::now();
@@ -238,7 +247,7 @@ void bfv_performance(shared_ptr<SEALContext> context){
         /*
         Print a dot to indicate progress.
         */
-        cout << ".";
+        printf("%d\r", count);
         cout.flush();
     }
 
@@ -276,6 +285,7 @@ void bfv_performance(shared_ptr<SEALContext> context){
             " microseconds" << endl;
     }
     cout.flush();
+    // cout.close();
 }
 
 void bfv_performance_custom(size_t degree_size){

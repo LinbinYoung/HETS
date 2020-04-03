@@ -24,12 +24,12 @@ def run_parallel(name, degree, core_num):
         proc.join()
 
 def boot():
-    core_num = input("Set number of parallel process(1-40): ")
+    core_num = int(input("Set number of parallel process(1-40): "))
     if core_num > multiprocessing.cpu_count() or core_num <= 0:
         print ('Number of Parallel Process must between 1 and 40!')
         exit(-1)
     degree = input("Set poly_modulus_degree 1024, 2048, 4096, 8192, 16384 or 32768: ")
-    if (degree not in [1024, 2048, 4096, 8192, 16384, 32768]):
+    if (degree not in ["1024", "2048", "4096", "8192", "16384", "32768"]):
         print ('Poly_Modulus_Degree must be 1024, 2048, 4096, 8192, 16384 or 32768')
         exit(-1)
     run_parallel(bname, degree, core_num)
