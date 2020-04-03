@@ -246,7 +246,6 @@ void bfv_performance(shared_ptr<SEALContext> context){
         /*
         Print a dot to indicate progress.
         */
-        printf("%d\r", count);
         cout.flush();
     }
     LogVVV << "count: " << count << endl;
