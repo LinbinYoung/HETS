@@ -11,7 +11,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/home/linbin/SEAL/native/src"
+  "/usr/local/include/SEAL-3.4"
   )
 
 # Targets to which this target links.

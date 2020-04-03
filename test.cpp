@@ -16,9 +16,9 @@ using namespace seal;
 void bfv_performance(shared_ptr<SEALContext> context){
     /* Get the current timestamp
     */
-    // string path = "../clustar/record/log";
-    // time_t t; t = time(NULL); int ii = time(&t); path = path + to_string(getpid()) + "-" + to_string(ii);
-    // ofstream cout(path);
+    string path = "../clustar/record/log";
+    time_t t; t = time(NULL); int ii = time(&t); path = path + to_string(getpid()) + "-" + to_string(ii);
+    ofstream LogVVV(path);
     chrono::high_resolution_clock::time_point time_start, time_end;
     chrono::microseconds time_diff;
     print_parameters(context);
@@ -31,7 +31,7 @@ void bfv_performance(shared_ptr<SEALContext> context){
     KeyGenerator keygen(context);
     time_end = chrono::high_resolution_clock::now();
     time_diff = chrono::duration_cast<chrono::microseconds>(time_end - time_start);
-    cout << "Generate Keys Done [" << time_diff.count() << " microseconds]" << endl;
+    LogVVV << "Generate Keys Done [" << time_diff.count() << " microseconds]" << endl;
     auto secret_key = keygen.secret_key();
     auto public_key = keygen.public_key();
     RelinKeys relin_keys;
@@ -43,9 +43,9 @@ void bfv_performance(shared_ptr<SEALContext> context){
         relin_keys = keygen.relin_keys();
         time_end = chrono::high_resolution_clock::now();
         time_diff = chrono::duration_cast<chrono::microseconds>(time_end - time_start);
-        cout << "Generate Relinearization Keys Done [" << time_diff.count() << " microseconds]" << endl;
+        LogVVV << "Generate Relinearization Keys Done [" << time_diff.count() << " microseconds]" << endl;
         if (!context->key_context_data()->qualifiers().using_batching){
-            cout << "Given encryption parameters do not support batching." << endl;
+            LogVVV << "Given encryption parameters do not support batching." << endl;
             return;
         }
         /* Generating Galois keys
@@ -54,7 +54,7 @@ void bfv_performance(shared_ptr<SEALContext> context){
         gal_keys = keygen.galois_keys();
         time_end = chrono::high_resolution_clock::now();
         time_diff = chrono::duration_cast<chrono::microseconds>(time_end - time_start);
-        cout << "Generating Galois Key Done [" << time_diff.count() << " microseconds]" << endl;
+        LogVVV << "Generating Galois Key Done [" << time_diff.count() << " microseconds]" << endl;
     }
 
     Encryptor encryptor(context, public_key);
@@ -267,25 +267,25 @@ void bfv_performance(shared_ptr<SEALContext> context){
     auto avg_rotate_rows_random = time_rotate_rows_random_sum.count() / count;
     auto avg_rotate_columns = time_rotate_columns_sum.count() / count;
 
-    cout << "Average batch: " << avg_batch << " microseconds" << endl;
-    cout << "Average unbatch: " << avg_unbatch << " microseconds" << endl;
-    cout << "Average encrypt: " << avg_encrypt << " microseconds" << endl;
-    cout << "Average decrypt: " << avg_decrypt << " microseconds" << endl;
-    cout << "Average add: " << avg_add << " microseconds" << endl;
-    cout << "Average multiply: " << avg_multiply << " microseconds" << endl;
-    cout << "Average multiply plain: " << avg_multiply_plain << " microseconds" << endl;
-    cout << "Average square: " << avg_square << " microseconds" << endl;
+    LogVVV << "Average batch: " << avg_batch << " microseconds" << endl;
+    LogVVV << "Average unbatch: " << avg_unbatch << " microseconds" << endl;
+    LogVVV << "Average encrypt: " << avg_encrypt << " microseconds" << endl;
+    LogVVV << "Average decrypt: " << avg_decrypt << " microseconds" << endl;
+    LogVVV << "Average add: " << avg_add << " microseconds" << endl;
+    LogVVV << "Average multiply: " << avg_multiply << " microseconds" << endl;
+    LogVVV << "Average multiply plain: " << avg_multiply_plain << " microseconds" << endl;
+    LogVVV << "Average square: " << avg_square << " microseconds" << endl;
     if (context->using_keyswitching()){
-        cout << "Average relinearize: " << avg_relinearize << " microseconds" << endl;
-        cout << "Average rotate rows one step: " << avg_rotate_rows_one_step <<
+        LogVVV << "Average relinearize: " << avg_relinearize << " microseconds" << endl;
+        LogVVV << "Average rotate rows one step: " << avg_rotate_rows_one_step <<
             " microseconds" << endl;
-        cout << "Average rotate rows random: " << avg_rotate_rows_random <<
+        LogVVV << "Average rotate rows random: " << avg_rotate_rows_random <<
             " microseconds" << endl;
-        cout << "Average rotate columns: " << avg_rotate_columns <<
+        LogVVV << "Average rotate columns: " << avg_rotate_columns <<
             " microseconds" << endl;
     }
     cout.flush();
-    // cout.close();
+    LogVVV.close();
 }
 
 void bfv_performance_custom(size_t degree_size){

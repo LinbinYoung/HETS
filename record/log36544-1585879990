@@ -1,0 +1,15 @@
+Generate Keys Done [3628 microseconds]
+Generate Relinearization Keys Done [6003 microseconds]
+Generating Galois Key Done [126181 microseconds]
+Average batch: 108 microseconds
+Average unbatch: 100 microseconds
+Average encrypt: 2874 microseconds
+Average decrypt: 682 microseconds
+Average add: 23 microseconds
+Average multiply: 6571 microseconds
+Average multiply plain: 875 microseconds
+Average square: 4434 microseconds
+Average relinearize: 1298 microseconds
+Average rotate rows one step: 1305 microseconds
+Average rotate rows random: 5383 microseconds
+Average rotate columns: 1294 microseconds
