@@ -33,9 +33,9 @@ def Calc():
     for elem in dict1:
         """
         """
-        avg_time = sum(dict1[elem]) / (len(dict1[elem]) * len(dict1[elem])) 
+        avg_time = sum(dict1[elem]) / (len(filelist) * len(filelist)) 
         if elem in ['Generate Keys Done', 'Generate Relinearization Keys Done', 'Generating Galois Key Done']:
-            str2 = elem + " # " + str(per_core_task) + " # " + str(avg_time) + "\n"
+            str2 = elem + " # " + str(avg_time) + "\n"
             f.write(str2.encode())
         else:
             str1 = elem + " # " + str(per_core_task) + " # " + str(avg_time) + " # " + str(avg_time / per_core_task) + "\n"
