@@ -22,19 +22,24 @@ def Calc():
             line = f.readline().strip()
             if not line:
                 break
-            print (line.split(':'))
             if (line.split(':')[0] == 'count'):
                 total_case = total_case + int(line.split(':')[1])
             else:
                 dict1[line.split(':')[0]].append(int(line.split(':')[1].split()[0]))
         f.close()
     
-    f = open('./report.txt', 'ab+')
+    f = open('./report.txt', 'wb+')
     per_core_task = (total_case + len(filelist) - 1) // len(filelist)
     for elem in dict1:
+        """
+        """
         avg_time = sum(dict1[elem]) / (len(dict1[elem]) * len(dict1[elem])) 
-        str1 = elem + ": " + str(per_core_task) + " " + str(avg_time) + " " + str(per_core_task / avg_time) + "\n"
-        f.write(str1.encode())
+        if elem in ['Generate Keys Done', 'Generate Relinearization Keys Done', 'Generating Galois Key Done']:
+            str2 = elem + " # " + str(per_core_task) + " # " + str(avg_time) + "\n"
+            f.write(str2.encode())
+        else:
+            str1 = elem + " # " + str(per_core_task) + " # " + str(avg_time) + " # " + str(avg_time / per_core_task) + "\n"
+            f.write(str1.encode())
     f.close()
 
 Calc()

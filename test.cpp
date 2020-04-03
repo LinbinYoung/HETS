@@ -253,18 +253,18 @@ void bfv_performance(shared_ptr<SEALContext> context){
     cout << " Done" << endl << endl;
     cout.flush();
 
-    auto avg_batch = time_batch_sum.count() / count;
-    auto avg_unbatch = time_unbatch_sum.count() / count;
-    auto avg_encrypt = time_encrypt_sum.count() / count;
-    auto avg_decrypt = time_decrypt_sum.count() / count;
-    auto avg_add = time_add_sum.count() / count;
-    auto avg_multiply = time_multiply_sum.count() / count;
-    auto avg_multiply_plain = time_multiply_plain_sum.count() / count;
-    auto avg_square = time_square_sum.count() / count;
-    auto avg_relinearize = time_relinearize_sum.count() / count;
-    auto avg_rotate_rows_one_step = time_rotate_rows_one_step_sum.count() / count;
-    auto avg_rotate_rows_random = time_rotate_rows_random_sum.count() / count;
-    auto avg_rotate_columns = time_rotate_columns_sum.count() / count;
+    auto avg_batch = time_batch_sum.count();
+    auto avg_unbatch = time_unbatch_sum.count();
+    auto avg_encrypt = time_encrypt_sum.count();
+    auto avg_decrypt = time_decrypt_sum.count();
+    auto avg_add = time_add_sum.count();
+    auto avg_multiply = time_multiply_sum.count();
+    auto avg_multiply_plain = time_multiply_plain_sum.count();
+    auto avg_square = time_square_sum.count();
+    auto avg_relinearize = time_relinearize_sum.count();
+    auto avg_rotate_rows_one_step = time_rotate_rows_one_step_sum.count();
+    auto avg_rotate_rows_random = time_rotate_rows_random_sum.count();
+    auto avg_rotate_columns = time_rotate_columns_sum.count();
 
     LogVVV << "Average batch: " << avg_batch << " microseconds" << endl;
     LogVVV << "Average unbatch: " << avg_unbatch << " microseconds" << endl;
