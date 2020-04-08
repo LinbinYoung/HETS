@@ -4,6 +4,7 @@ from pathlib import Path
 from collections import defaultdict
 
 record_path = os.path.join(os.path.dirname(__file__), ".", "record")
+report_path = os.path.join(os.path.dirname(__file__), "..", "clustar", "report.txt")
 
 def getFileList():
     filelist = []
@@ -28,7 +29,7 @@ def Calc():
                 dict1[line.split(':')[0]].append(int(line.split(':')[1].split()[0]))
         f.close()
     
-    f = open('./report.txt', 'wb+')
+    f = open(report_path, 'wb+')
     per_core_task = (total_case + len(filelist) - 1) // len(filelist)
     for elem in dict1:
         """

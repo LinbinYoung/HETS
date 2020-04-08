@@ -9,16 +9,40 @@
 #include <vector>
 #include <string>
 #include <chrono>
-#include <random>
 #include <thread>
 #include <mutex>
 #include <memory>
 #include <limits>
 #include <algorithm>
 #include <numeric>
+#include <stdio.h>
+#include <time.h>
+#include <unistd.h>
 #include "seal/seal.h"
 
+using namespace std;
+using namespace seal;
+
+#define clustar_flag  "\
++-------------------------------------------------------------------------------+\n\
+|                                                                               |\n\
+|     |||||   |         |       |  ||||||||  |||||||||       |        ||||||    |\n\
+|    |        |         |       |  |             |          | |       |     |   |\n\
+|   |         |         |       |  |             |         |   |      |     |   |\n\
+|   |         |         |       |  ||||||||      |        |||||||     ||||||    |\n\
+|   |         |         |       |         |      |       |       |    |   |     |\n\
+|    |        |         |       |         |      |      |         |   |    |    |\n\
+|     |||||   ||||||||  |||||||||  ||||||||      |     |           |  |     |   |\n\
+|                                                                               |\n\
++-------------------------------------------------------------------------------+\n";
+
+void boot_performance();
 void bfv_performance_custom(size_t degree_size);
+inline void add_plain_helper(int op, shared_ptr<SEALContext> context);
+inline void mul_helper(int op, shared_ptr<SEALContext> context);
+inline void square_helper(int op, shared_ptr<SEALContext> context);
+
+void calc_bfv_basic(size_t poly_modulus_degree);
 
 /*
 Helper function: Prints the name of the example in a fancy banner.
@@ -97,123 +121,60 @@ inline void print_parameters(std::shared_ptr<seal::SEALContext> context){
     std::cout << "\\" << std::endl;
 }
 
-/*
-Helper function: Prints the `parms_id' to std::ostream.
-*/
-inline std::ostream &operator <<(std::ostream &stream, seal::parms_id_type parms_id)
-{
-    /*
-    Save the formatting information for std::cout.
-    */
-    std::ios old_fmt(nullptr);
-    old_fmt.copyfmt(std::cout);
 
-    stream << std::hex << std::setfill('0')
-        << std::setw(16) << parms_id[0] << " "
-        << std::setw(16) << parms_id[1] << " "
-        << std::setw(16) << parms_id[2] << " "
-        << std::setw(16) << parms_id[3] << " ";
-
-    /*
-    Restore the old std::cout formatting.
-    */
-    std::cout.copyfmt(old_fmt);
-
-    return stream;
-}
-
-/*
-Helper function: Prints a vector of floating-point values.
-*/
-template<typename T>
-inline void print_vector(std::vector<T> vec, std::size_t print_size = 4, int prec = 3)
-{
-    /*
-    Save the formatting information for std::cout.
-    */
-    std::ios old_fmt(nullptr);
-    old_fmt.copyfmt(std::cout);
-
-    std::size_t slot_count = vec.size();
-
-    std::cout << std::fixed << std::setprecision(prec);
-    std::cout << std::endl;
-    if(slot_count <= 2 * print_size)
-    {
-        std::cout << "    [";
-        for (std::size_t i = 0; i < slot_count; i++)
-        {
-            std::cout << " " << vec[i] << ((i != slot_count - 1) ? "," : " ]\n");
-        }
+inline void print_result(int op, std::shared_ptr<seal::SEALContext> context, int num1, int num2, size_t size_en, size_t noise_en, string polynomial, size_t res){
+    auto &context_data = *context->key_context_data();
+    std::string scheme_name;
+    std::string op_name;
+    switch(op){
+        case 1: op_name = "Add"; break;
+        case 2: op_name = "Mul"; break;
+        case 3: op_name = "Square"; break;
+        default: printf("Unsupported Compute Mode!!!\n"); return;
     }
-    else
+    switch (context_data.parms().scheme())
     {
-        vec.resize(std::max(vec.size(), 2 * print_size));
-        std::cout << "    [";
-        for (std::size_t i = 0; i < print_size; i++)
-        {
-            std::cout << " " << vec[i] << ",";
-        }
-        if(vec.size() > 2 * print_size)
-        {
-            std::cout << " ...,";
-        }
-        for (std::size_t i = slot_count - print_size; i < slot_count; i++)
-        {
-            std::cout << " " << vec[i] << ((i != slot_count - 1) ? "," : " ]\n");
-        }
+    case seal::scheme_type::BFV:
+        scheme_name = "BFV";
+        break;
+    case seal::scheme_type::CKKS:
+        scheme_name = "CKKS";
+        break;
+    default:
+        throw std::invalid_argument("unsupported scheme");
     }
-    std::cout << std::endl;
-
-    /*
-    Restore the old std::cout formatting.
-    */
-    std::cout.copyfmt(old_fmt);
-}
-
-
-/*
-Helper function: Prints a matrix of values.
-*/
-template<typename T>
-inline void print_matrix(std::vector<T> matrix, std::size_t row_size)
-{
-    /*
-    We're not going to print every column of the matrix (there are 2048). Instead
-    print this many slots from beginning and end of the matrix.
-    */
-    std::size_t print_size = 5;
-
-    std::cout << std::endl;
-    std::cout << "    [";
-    for (std::size_t i = 0; i < print_size; i++)
-    {
-        std::cout << std::setw(3) << std::right << matrix[i] << ",";
-    }
-    std::cout << std::setw(3) << " ...,";
-    for (std::size_t i = row_size - print_size; i < row_size; i++)
-    {
-        std::cout << std::setw(3) << matrix[i]
-            << ((i != row_size - 1) ? "," : " ]\n");
-    }
-    std::cout << "    [";
-    for (std::size_t i = row_size; i < row_size + print_size; i++)
-    {
-        std::cout << std::setw(3) << matrix[i] << ",";
-    }
-    std::cout << std::setw(3) << " ...,";
-    for (std::size_t i = 2 * row_size - print_size; i < 2 * row_size; i++)
-    {
-        std::cout << std::setw(3) << matrix[i]
-            << ((i != 2 * row_size - 1) ? "," : " ]\n");
-    }
-    std::cout << std::endl;
-};
-
-/*
-Helper function: Print line number.
-*/
-inline void print_line(int line_number)
-{
-    std::cout << "Line " << std::setw(3) << line_number << " --> ";
+    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+	fprintf(stdout, "|                                      TEST RESULT                                       |\n");
+	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+	fprintf(stdout, "| Task Type                 | %-58s |\n", op_name.c_str());
+	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+	fprintf(stdout, "| Number 1                  | %-58d |\n", num1);
+	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+	fprintf(stdout, "| Number 2                  | %-58d |\n", num2);
+	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+	fprintf(stdout, "|                                                                                        |\n");
+	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+	fprintf(stdout, "| Encryption Parameters                                                                  |\n");
+	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+	fprintf(stdout, "| Scheme                      | %-56s |\n", scheme_name.c_str());
+	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+	fprintf(stdout, "| Poly_modulus_degree         | %-56d |\n", context_data.parms().poly_modulus_degree());
+	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+	fprintf(stdout, "| Coeff_modulus size          | %-56d |\n", context_data.total_coeff_modulus_bit_count());
+	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+	fprintf(stdout, "| Plain_modulus               | %-56d |\n", context_data.parms().plain_modulus().value());
+	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    fprintf(stdout, "|                                                                                        |\n");
+    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    fprintf(stdout, "| Result                                                                                 |\n");
+    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    fprintf(stdout, "| Polynomial                  | %-56s |\n", polynomial.c_str());
+    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    fprintf(stdout, "| Size_encrypt                | %-56d |\n", size_en);
+    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    fprintf(stdout, "| Noise_budget                | %-56d |\n", noise_en);
+	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    fprintf(stdout, "| Output                      | %-56d |\n", res);
+    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+	fprintf(stdout, "\n");
 }

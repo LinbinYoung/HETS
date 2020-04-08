@@ -167,32 +167,59 @@ boot.cpp.s:
 	$(MAKE) -f CMakeFiles/clustarexamples.dir/build.make CMakeFiles/clustarexamples.dir/boot.cpp.s
 .PHONY : boot.cpp.s
 
-test.o: test.cpp.o
+calc.o: calc.cpp.o
 
-.PHONY : test.o
+.PHONY : calc.o
 
 # target to build an object file
-test.cpp.o:
-	$(MAKE) -f CMakeFiles/clustarexamples.dir/build.make CMakeFiles/clustarexamples.dir/test.cpp.o
-.PHONY : test.cpp.o
+calc.cpp.o:
+	$(MAKE) -f CMakeFiles/clustarexamples.dir/build.make CMakeFiles/clustarexamples.dir/calc.cpp.o
+.PHONY : calc.cpp.o
 
-test.i: test.cpp.i
+calc.i: calc.cpp.i
 
-.PHONY : test.i
+.PHONY : calc.i
 
 # target to preprocess a source file
-test.cpp.i:
-	$(MAKE) -f CMakeFiles/clustarexamples.dir/build.make CMakeFiles/clustarexamples.dir/test.cpp.i
-.PHONY : test.cpp.i
+calc.cpp.i:
+	$(MAKE) -f CMakeFiles/clustarexamples.dir/build.make CMakeFiles/clustarexamples.dir/calc.cpp.i
+.PHONY : calc.cpp.i
 
-test.s: test.cpp.s
+calc.s: calc.cpp.s
 
-.PHONY : test.s
+.PHONY : calc.s
 
 # target to generate assembly for a file
-test.cpp.s:
-	$(MAKE) -f CMakeFiles/clustarexamples.dir/build.make CMakeFiles/clustarexamples.dir/test.cpp.s
-.PHONY : test.cpp.s
+calc.cpp.s:
+	$(MAKE) -f CMakeFiles/clustarexamples.dir/build.make CMakeFiles/clustarexamples.dir/calc.cpp.s
+.PHONY : calc.cpp.s
+
+performance.o: performance.cpp.o
+
+.PHONY : performance.o
+
+# target to build an object file
+performance.cpp.o:
+	$(MAKE) -f CMakeFiles/clustarexamples.dir/build.make CMakeFiles/clustarexamples.dir/performance.cpp.o
+.PHONY : performance.cpp.o
+
+performance.i: performance.cpp.i
+
+.PHONY : performance.i
+
+# target to preprocess a source file
+performance.cpp.i:
+	$(MAKE) -f CMakeFiles/clustarexamples.dir/build.make CMakeFiles/clustarexamples.dir/performance.cpp.i
+.PHONY : performance.cpp.i
+
+performance.s: performance.cpp.s
+
+.PHONY : performance.s
+
+# target to generate assembly for a file
+performance.cpp.s:
+	$(MAKE) -f CMakeFiles/clustarexamples.dir/build.make CMakeFiles/clustarexamples.dir/performance.cpp.s
+.PHONY : performance.cpp.s
 
 # Help Target
 help:
@@ -206,9 +233,12 @@ help:
 	@echo "... boot.o"
 	@echo "... boot.i"
 	@echo "... boot.s"
-	@echo "... test.o"
-	@echo "... test.i"
-	@echo "... test.s"
+	@echo "... calc.o"
+	@echo "... calc.i"
+	@echo "... calc.s"
+	@echo "... performance.o"
+	@echo "... performance.i"
+	@echo "... performance.s"
 .PHONY : help
 
 

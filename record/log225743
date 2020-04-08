@@ -1,0 +1,10 @@
+Generate Keys Done: 1272 microseconds
+count: 34
+Average batch: 1184 microseconds
+Average unbatch: 1183 microseconds
+Average encrypt: 27588 microseconds
+Average decrypt: 5652 microseconds
+Average add: 278 microseconds
+Average multiply: 55175 microseconds
+Average multiply plain: 771 microseconds
+Average square: 38414 microseconds

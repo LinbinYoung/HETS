@@ -10,7 +10,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ClustarExamples_SOURCE_DIR}/../bin)
 add_executable(clustarexamples boot.cpp)
 target_sources(clustarexamples
     PRIVATE
-        test.cpp
+        calc.cpp
+        performance.cpp
 )
 
 # Import Microsoft SEAL
