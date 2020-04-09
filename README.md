@@ -28,15 +28,19 @@ This System has two functions:
 
 ## Run the System
 * Main Page
+
 ![main page](./pic/mainpage.png)
 
 * Naive Calculator
+
 ![calculator](./pic/naivecalculator.png)
 
 * Result of the Calculator
+
 ![result](./pic/result.png)
 
 * Multicore Test
+
 ![multicore](./pic/multicore.png)
 
 ## Multicore Test Result
