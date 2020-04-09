@@ -12,6 +12,12 @@ def getFileList():
         filelist = [os.path.join(root, log_name[i]) for i in range(len(log_name))]
     return filelist
 
+def clearFile():
+    for root, _, log_name in os.walk(record_path):
+        for i in range(len(log_name)):
+            file_name = os.path.join(root, log_name[i])
+            os.remove(file_name)
+
 def Calc():
     filelist = getFileList()
     total_case = 0
@@ -42,5 +48,9 @@ def Calc():
             str1 = elem + " # " + str(per_core_task) + " # " + str(avg_time) + " # " + str(avg_time / per_core_task) + "\n"
             f.write(str1.encode())
     f.close()
+    """
+        Clear the log
+    """
+    clearFile()
 
 Calc()

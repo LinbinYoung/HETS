@@ -21,4 +21,4 @@ find_package(SEAL 3.4.5 EXACT REQUIRED
 )
 
 # Link Microsoft SEAL
-target_link_libraries(clustarexamples SEAL::seal)
+target_link_libraries(clustarexamples SEAL::seal pthread)

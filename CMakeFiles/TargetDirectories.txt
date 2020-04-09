@@ -1,3 +1,0 @@
-/home/linbin/SEAL/native/clustar/CMakeFiles/rebuild_cache.dir
-/home/linbin/SEAL/native/clustar/CMakeFiles/edit_cache.dir
-/home/linbin/SEAL/native/clustar/CMakeFiles/clustarexamples.dir

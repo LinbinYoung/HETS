@@ -18,10 +18,16 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
+#include <pthread.h>
 #include "seal/seal.h"
 
 using namespace std;
 using namespace seal;
+
+struct thread_para{
+    int fd;
+    shared_ptr<SEALContext> context;
+};
 
 #define clustar_flag  "\
 +-------------------------------------------------------------------------------+\n\
@@ -34,15 +40,13 @@ using namespace seal;
 |    |        |         |       |         |      |      |         |   |    |    |\n\
 |     |||||   ||||||||  |||||||||  ||||||||      |     |           |  |     |   |\n\
 |                                                                               |\n\
-+-------------------------------------------------------------------------------+\n";
++-------------------------------------------------------------------------------+\n"
 
-void boot_performance();
-void bfv_performance_custom(size_t degree_size);
 inline void add_plain_helper(int op, shared_ptr<SEALContext> context);
 inline void mul_helper(int op, shared_ptr<SEALContext> context);
 inline void square_helper(int op, shared_ptr<SEALContext> context);
-
-void calc_bfv_basic(size_t poly_modulus_degree);
+void calc_bfv_basic();
+int muti_core_runner();
 
 /*
 Helper function: Prints the name of the example in a fancy banner.

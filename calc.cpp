@@ -1,14 +1,12 @@
 #include "common.h"
 
 
-void calc_bfv_basic(size_t poly_modulus_degree){
+void calc_bfv_basic(){
     /*Prepare the encryptor
     */
     EncryptionParameters parms(scheme_type::BFV);
-    parms.set_poly_modulus_degree(poly_modulus_degree);
-    parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
-    parms.set_plain_modulus(1024);
-    auto context = SEALContext::Create(parms);
+    size_t poly_modulus_degree = 1024;
+    vector<int> valid_degree = {1024, 2048, 4096, 8192, 16384, 32768};
     // print_parameters(context);
     /*Extract number and operation from operation_str
     */
@@ -24,9 +22,20 @@ void calc_bfv_basic(size_t poly_modulus_degree){
         cout << "| 2. Multiply                | Enter Number: 24           |" << endl;
         cout << "| 3. Square                  | Enter Number: 12           |" << endl;
         cout << "+----------------------------+----------------------------+" << endl;
-        cout << endl << ">Enter Operation (1 ~ 3) or exit (0):";
+        cout << endl << ">Enter poly_modulus_degree 1024, 2048, 4096, 8192, 16384 32768 or exit (0):";
+        while (!(cin >> poly_modulus_degree));
+        if (find(valid_degree.begin(), valid_degree.end(), poly_modulus_degree) == valid_degree.end()){
+            cout << "Invalid poly_modulus_degree" << endl;
+            invalid = false;
+            continue;
+        }
+        if (poly_modulus_degree == 0){invalid = false; continue;}
+        parms.set_poly_modulus_degree(poly_modulus_degree);
+        parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
+        parms.set_plain_modulus(1024);
+        auto context = SEALContext::Create(parms);
+        cout << endl << ">Enter Operation (1 ~ 3):";
         while (!(cin>>op) || ((op < 0 || op > 3)));
-        if (op == 0){invalid = false; continue;}
         switch(op){
             case 1: add_plain_helper(op, context); break;
             case 2: mul_helper(op, context); break;

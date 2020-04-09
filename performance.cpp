@@ -3,17 +3,18 @@
 
 #include "common.h"
 
-#define MAXS 180000 //running for 3 minutes
+#define MAXS 18000 //running for 3 minutes
 
-void bfv_performance(shared_ptr<SEALContext> context){
+void* bfv_performance(void *th_para){
     /* Get the current timestamp
     */
+    struct thread_para *para = (struct thread_para *) th_para;
     string path = "../clustar/record/log";
-    path = path + to_string(getpid());
-    cout << path << endl;
+    path = path + to_string(para->fd);
     ofstream LogVVV(path);
     chrono::high_resolution_clock::time_point time_start, time_end;
     chrono::microseconds time_diff;
+    auto context = para->context;
     auto &parms = context->first_context_data()->parms();
     auto &plain_modulus = parms.plain_modulus();
     size_t poly_modulus_degree = parms.poly_modulus_degree();
@@ -38,7 +39,7 @@ void bfv_performance(shared_ptr<SEALContext> context){
         LogVVV << "Generate Relinearization Keys Done: " << time_diff.count() << " microseconds" << endl;
         if (!context->key_context_data()->qualifiers().using_batching){
             LogVVV << "Given encryption parameters do not support batching." << endl;
-            return;
+            return NULL;
         }
         /* Generating Galois keys
         */
@@ -239,7 +240,6 @@ void bfv_performance(shared_ptr<SEALContext> context){
         */
     }
     LogVVV << "count: " << count << endl;
-    cout << " Done" << endl << endl;
 
     auto avg_batch = time_batch_sum.count();
     auto avg_unbatch = time_unbatch_sum.count();
@@ -272,31 +272,59 @@ void bfv_performance(shared_ptr<SEALContext> context){
             " microseconds" << endl;
     }
     LogVVV.close();
+    pthread_exit(NULL);
 }
 
-void bfv_performance_custom(size_t degree_size){
-    size_t poly_modulus_degree = degree_size;
-    if (poly_modulus_degree < 1024 || poly_modulus_degree > 32768 ||
-        (poly_modulus_degree & (poly_modulus_degree - 1)) != 0)
-    {
-        cout << "Invalid option." << endl;
-        return;
-    }
-
-    string banner = "BFV Performance Test with Degree: ";
-    print_example_banner(banner + to_string(poly_modulus_degree));
-
-    EncryptionParameters parms(scheme_type::BFV);
-    parms.set_poly_modulus_degree(poly_modulus_degree);
-    parms.set_coeff_modulus(CoeffModulus::BFVDefault(poly_modulus_degree));
-    if (poly_modulus_degree == 1024){
-        parms.set_plain_modulus(12289);
-    }else{
-        parms.set_plain_modulus(786433);
-    }
-    bfv_performance(SEALContext::Create(parms));
-}
-
-void boot_performance(){
-    system("python3 ../clustar/run.py");
+int muti_core_runner(){
+    /*
+    */
+    bool invalid = true;
+    int cpu_core_num = 40;
+    size_t m_degree = 1024;
+    vector<int> valid_degree = {1024, 2048, 4096, 8192, 16384, 32768};
+    do{
+        cout << "+---------------------------------------------------------+" << endl;
+        cout << "| Multi Core Task                                         |" << endl;
+        cout << "+---------------------------------------------------------+" << endl;
+        cout << endl << ">Enter Number of Threads (1 ~ 40) or exit (0):";
+        while (!(cin >> cpu_core_num) || (cpu_core_num <0 || cpu_core_num > 40));
+        if (cpu_core_num == 0){invalid = false; continue;}
+        cout << endl << ">Enter poly_modulus_degree 1024, 2048, 4096, 8192, 16384 or 32768:";
+        while (!(cin >> m_degree));
+        if (find(valid_degree.begin(), valid_degree.end(), m_degree) == valid_degree.end()){
+            cout << "Invalid poly_modulus_degree" << endl;
+            invalid = false;
+            continue;
+        }
+        /*Initialized thread data 
+        */
+        pthread_t thread[cpu_core_num];
+        struct thread_para th_para[cpu_core_num];
+        EncryptionParameters parms(scheme_type::BFV);
+        parms.set_poly_modulus_degree(m_degree);
+        parms.set_coeff_modulus(CoeffModulus::BFVDefault(m_degree));
+        if (m_degree == 1024){
+            parms.set_plain_modulus(12289);
+        }else{
+            parms.set_plain_modulus(786433);
+        }
+        for (int i = 0; i < cpu_core_num; i ++){
+            // th_para[i].poly_degree = m_degree;
+            th_para[i].fd = i;
+            th_para[i].context = SEALContext::Create(parms);
+        }
+        /*Create Thread
+        */
+        for (int i = 0; i < cpu_core_num; i ++){
+            pthread_create(&thread[i], NULL, bfv_performance, (void*)(&th_para[i]));
+        }
+        /*Join
+        */
+        for (int i = 0; i < cpu_core_num; i ++){
+            pthread_join(thread[i], NULL);
+        }
+        system("python3 ../clustar/logAn.py");
+        cout << endl << "Done, Check the report.txt in clustar/record" << endl << endl;
+    }while (invalid);
+    return 0;
 }
