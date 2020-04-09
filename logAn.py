@@ -37,6 +37,8 @@ def Calc():
     
     f = open(report_path, 'wb+')
     per_core_task = (total_case + len(filelist) - 1) // len(filelist)
+    title_str = "ITEM" + " # " + "NUM" + " # " + "TOTAL TIME" + " # " + "AVG TIME" + "\n"
+    f.write(title_str.encode())
     for elem in dict1:
         """
         """

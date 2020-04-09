@@ -167,17 +167,17 @@ inline void print_result(int op, std::shared_ptr<seal::SEALContext> context, int
 	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
     fprintf(stdout, "|                                                                                        |\n");
     fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
-    fprintf(stdout, "| Speed                                                                                  |\n");
+    fprintf(stdout, "| Speed(microsecond)                                                                     |\n");
     fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
-    fprintf(stdout, "| Encryption Time             | %-56d |\n", en_time);
+    fprintf(stdout, "| Encryption Time             | %-56lu |\n", en_time);
     fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
     if (reli_time != -1){
-        fprintf(stdout, "| Relinearize Time            | %-56d |\n", reli_time);
+        fprintf(stdout, "| Relinearize Time            | %-56lu |\n", reli_time);
         fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
     }
-    fprintf(stdout, "| Decryption Time             | %-56d |\n", de_time);
+    fprintf(stdout, "| Decryption Time             | %-56lu |\n", de_time);
     fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
-    fprintf(stdout, "| Operation Time              | %-56d |\n", op_time);
+    fprintf(stdout, "| Operation Time              | %-56lu |\n", op_time);
     fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
     fprintf(stdout, "|                                                                                        |\n");
     fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
@@ -185,11 +185,11 @@ inline void print_result(int op, std::shared_ptr<seal::SEALContext> context, int
     fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
     fprintf(stdout, "| Polynomial                  | %-56s |\n", polynomial.c_str());
     fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
-    fprintf(stdout, "| Size_encrypt                | %-56d |\n", size_en);
+    fprintf(stdout, "| Size_encrypt                | %-56lu |\n", size_en);
     fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
-    fprintf(stdout, "| Noise_budget                | %-56d |\n", noise_en);
+    fprintf(stdout, "| Noise_budget                | %-56lu |\n", noise_en);
 	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
-    fprintf(stdout, "| Output                      | %-56d |\n", res);
+    fprintf(stdout, "| Output                      | %-56lu |\n", res);
     fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
 	fprintf(stdout, "\n");
 }
