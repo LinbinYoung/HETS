@@ -29,18 +29,15 @@ struct thread_para{
     shared_ptr<SEALContext> context;
 };
 
-#define clustar_flag  "\
-+-------------------------------------------------------------------------------+\n\
-|                                                                               |\n\
-|     |||||   |         |       |  ||||||||  |||||||||       |        ||||||    |\n\
-|    |        |         |       |  |             |          | |       |     |   |\n\
-|   |         |         |       |  |             |         |   |      |     |   |\n\
-|   |         |         |       |  ||||||||      |        |||||||     ||||||    |\n\
-|   |         |         |       |         |      |       |       |    |   |     |\n\
-|    |        |         |       |         |      |      |         |   |    |    |\n\
-|     |||||   ||||||||  |||||||||  ||||||||      |     |           |  |     |   |\n\
-|                                                                               |\n\
-+-------------------------------------------------------------------------------+\n"
+#define nation_flag "\
++---------------------------------------------------------------------+\n\
+|  _______      ________________.___________    _______    _________  |\n\
+|  \\      \\    /  _  \\__    ___/|   \\_____  \\   \\      \\  /   _____/  |\n\
+|  /   |   \\  /  /_\\  \\|    |   |   |/   |   \\  /   |   \\ \\_____  \\   |\n\
+| /    |    \\/    |    \\    |   |   /    |    \\/    |    \\/        \\  |\n\
+| \\____|__  /\\____|__  /____|   |___\\_______  /\\____|__  /_______  /  |\n\
+|         \\/         \\/                     \\/         \\/        \\/   |\n\
++---------------------------------------------------------------------+\n"
 
 inline void add_plain_helper(int op, shared_ptr<SEALContext> context);
 inline void mul_helper(int op, shared_ptr<SEALContext> context);
@@ -51,8 +48,7 @@ int muti_core_runner();
 /*
 Helper function: Prints the name of the example in a fancy banner.
 */
-inline void print_example_banner(std::string title)
-{
+inline void print_example_banner(std::string title){
     if (!title.empty())
     {
         std::size_t title_length = title.length();
@@ -73,8 +69,7 @@ Helper function: Prints the parameters in a SEALContext.
 */
 inline void print_parameters(std::shared_ptr<seal::SEALContext> context){
     // Verify parameters
-    if (!context)
-    {
+    if (!context){
         throw std::invalid_argument("context is not set");
     }
     auto &context_data = *context->key_context_data();
@@ -126,7 +121,7 @@ inline void print_parameters(std::shared_ptr<seal::SEALContext> context){
 }
 
 
-inline void print_result(int op, std::shared_ptr<seal::SEALContext> context, int num1, int num2, size_t size_en, size_t noise_en, string polynomial, size_t res){
+inline void print_result(int op, std::shared_ptr<seal::SEALContext> context, int num1, int num2, size_t size_en, size_t noise_en, string polynomial, size_t res, size_t en_time, size_t reli_time, size_t de_time, size_t op_time){
     auto &context_data = *context->key_context_data();
     std::string scheme_name;
     std::string op_name;
@@ -154,8 +149,10 @@ inline void print_result(int op, std::shared_ptr<seal::SEALContext> context, int
 	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
 	fprintf(stdout, "| Number 1                  | %-58d |\n", num1);
 	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
-	fprintf(stdout, "| Number 2                  | %-58d |\n", num2);
-	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    if (num2 != -1){
+        fprintf(stdout, "| Number 2                  | %-58d |\n", num2);
+	    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    }
 	fprintf(stdout, "|                                                                                        |\n");
 	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
 	fprintf(stdout, "| Encryption Parameters                                                                  |\n");
@@ -168,6 +165,20 @@ inline void print_result(int op, std::shared_ptr<seal::SEALContext> context, int
 	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
 	fprintf(stdout, "| Plain_modulus               | %-56d |\n", context_data.parms().plain_modulus().value());
 	fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    fprintf(stdout, "|                                                                                        |\n");
+    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    fprintf(stdout, "| Speed                                                                                  |\n");
+    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    fprintf(stdout, "| Encryption Time             | %-56d |\n", en_time);
+    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    if (reli_time != -1){
+        fprintf(stdout, "| Relinearize Time            | %-56d |\n", reli_time);
+        fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    }
+    fprintf(stdout, "| Decryption Time             | %-56d |\n", de_time);
+    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
+    fprintf(stdout, "| Operation Time              | %-56d |\n", op_time);
+    fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
     fprintf(stdout, "|                                                                                        |\n");
     fprintf(stdout, "+----------------------------------------------------------------------------------------+\n");
     fprintf(stdout, "| Result                                                                                 |\n");

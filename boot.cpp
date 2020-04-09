@@ -13,7 +13,7 @@ int main(int argc, char** argv){
     bool invalid = true;
     do{
         system("clear");
-        cout << clustar_flag;
+        cout << nation_flag;
         int op = 1;
         cout << endl << ">Enter Task Mode (1 ~ 2) or exit (0):";
         while (!(cin >> op));
